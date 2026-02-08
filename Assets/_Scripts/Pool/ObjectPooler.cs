@@ -55,7 +55,7 @@ public class ObjectPooler : MonoBehaviour
     /// <summary>
     /// Spawns the specified prefab at the given position and rotation.
     /// </summary>
-    public Transform Spawn(Transform prefab, Vector3 position, Quaternion rotation)
+    public Transform Spawn(Transform prefab, Transform spawnPoint, Quaternion rotation)
     {
         if (!_poolDictionary.ContainsKey(prefab))
         {
@@ -76,7 +76,7 @@ public class ObjectPooler : MonoBehaviour
             _instanceToPrefabMap[objectToSpawn] = prefab;
         }
 
-        objectToSpawn.position = position;
+        objectToSpawn.position = spawnPoint.position;
         objectToSpawn.rotation = rotation;
         objectToSpawn.gameObject.SetActive(true);
 

@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96ad531a5a20d6b4ba1149039ff3d13f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NormalTile
+  tileSpeed: 6
 --- !u!61 &3776017271965538799
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -136,7 +137,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

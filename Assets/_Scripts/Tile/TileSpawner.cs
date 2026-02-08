@@ -2,40 +2,53 @@ using UnityEngine;
 
 public class TileSpawner : MonoBehaviour
 {
-    public LaneManager laneManager;
+    [Header("Lane Settings")]
+    public Transform[] lanes; // List of lanes
+    [Space]
 
-    [Header("Tile Prefabs (Pool Keys)")]
-    public Transform normalTilePrefab;
-    public Transform sliderTilePrefab;
+    [Header("Tiles")]
+    public Transform normalTile;
+    public Transform sliderTile;
 
-    [Header("Spawn Settings")]
-    public float fallSpeed = 5f;
+    [Header("Spawn Chances")]
     [Range(0f, 1f)]
-    public float sliderChance = 0.2f;
+    public float sliderChance = 0.2f; // 20% slider
 
-    public void SpawnTile(float songTime)
+    // Stores the last spawned lane index
+    private int lastLaneIndex = -1;
+
+    public void SpawnTiles()
     {
-        int lane = laneManager.GetRandomLane();
+        int laneIndex = GetRandomLane();
 
-        if (!laneManager.CanSpawnInLane(lane, songTime))
-            return;
+        // Decide which tile to spawn
+        Transform tileToSpawn;
 
-        Vector3 spawnPos = laneManager.GetLanePosition(lane);
-
-        bool spawnSlider = Random.value < sliderChance;
-
-        if (spawnSlider)
-        {
-            Transform obj = ObjectPooler.Instance.Spawn(sliderTilePrefab, spawnPos, Quaternion.identity);
-            SliderTile tile = obj.GetComponent<SliderTile>();
-            tile.Initialize(fallSpeed);
-            tile.SetLength(Random.Range(1.5f, 3f));
-        }
+        if (Random.value < sliderChance)
+            tileToSpawn = sliderTile;   // 20%
         else
+            tileToSpawn = normalTile;   // 80%
+
+        ObjectPooler.Instance.Spawn(tileToSpawn, lanes[laneIndex], Quaternion.identity);
+
+        Debug.Log("Tile Spawned!!");
+    }
+
+    // Generates random lane index but never same as last lane
+    private int GetRandomLane()
+    {
+        int newLane;
+
+        do
         {
-            Transform obj = ObjectPooler.Instance.Spawn(normalTilePrefab, spawnPos, Quaternion.identity);
-            NormalTile tile = obj.GetComponent<NormalTile>();
-            tile.Initialize(fallSpeed);
-        }
+            // Pick a random lane
+            newLane = Random.Range(0, lanes.Length);
+
+        } while (newLane == lastLaneIndex); // Repeat if same as previous lane
+
+        // Save this lane as last used
+        lastLaneIndex = newLane;
+
+        return newLane;
     }
 }

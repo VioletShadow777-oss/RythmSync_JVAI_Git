@@ -50,7 +50,7 @@ public class BeatDetector : MonoBehaviour
         {
             if (songTime - lastBeatTime > minBeatInterval)
             {
-                tileSpawner.SpawnTile(songTime);
+                tileSpawner.SpawnTiles();
 
                 Debug.Log("Beat detected at: " + songTime);
                 lastBeatTime = songTime;

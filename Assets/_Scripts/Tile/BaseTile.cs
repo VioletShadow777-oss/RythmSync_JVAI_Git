@@ -3,18 +3,18 @@ using UnityEngine.InputSystem;  // Required for new Input System
 
 public class BaseTile : MonoBehaviour
 {
-    protected float speed;
+    public float tileSpeed;
     protected float despawnY = -6f; // off-screen Y
 
     public void Initialize(float fallSpeed)
     {
-        speed = fallSpeed;
+        tileSpeed = fallSpeed;
     }
 
     void Update()
     {
         // Move tile down
-        transform.Translate(Vector3.down * speed * Time.deltaTime);
+        transform.Translate(Vector3.down * tileSpeed * Time.deltaTime);
 
         // Despawn if offscreen
         if (transform.position.y < despawnY)
