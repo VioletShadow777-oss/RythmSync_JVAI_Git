@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class BeatDetector : MonoBehaviour
 {
-    public AudioSource audioSource;
 
     [Header("Beat Settings")]
     public float sensitivity = 1.5f;      // Higher = fewer beats
@@ -12,6 +11,12 @@ public class BeatDetector : MonoBehaviour
     private float previousEnergy = 0f;
     private float lastBeatTime = 0f;
 
+    // Components
+    public AudioSource audioSource;
+
+
+    // References
+    public TileSpawner tileSpawner;
     void Start()
     {
         audioSource.Play();
@@ -45,6 +50,8 @@ public class BeatDetector : MonoBehaviour
         {
             if (songTime - lastBeatTime > minBeatInterval)
             {
+                tileSpawner.SpawnTile(songTime);
+
                 Debug.Log("Beat detected at: " + songTime);
                 lastBeatTime = songTime;
             }
