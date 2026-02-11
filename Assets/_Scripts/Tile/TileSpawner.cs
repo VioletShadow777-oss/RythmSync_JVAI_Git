@@ -29,7 +29,14 @@ public class TileSpawner : MonoBehaviour
         else
             tileToSpawn = normalTile;   // 80%
 
-        ObjectPooler.Instance.Spawn(tileToSpawn, lanes[laneIndex], Quaternion.identity);
+        // Spawn and store returned object
+        Transform obj = ObjectPooler.Instance.Spawn(tileToSpawn, lanes[laneIndex], Quaternion.identity);
+
+        // Get BaseTile component
+        BaseTile tile = obj.GetComponent<BaseTile>();
+
+        // Initialize with speed and lane index
+        tile.Initialize(5f, laneIndex); // <-- use your fallSpeed variable if you have one
 
         Debug.Log("Tile Spawned!!");
     }

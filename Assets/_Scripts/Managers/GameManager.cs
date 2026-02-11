@@ -6,6 +6,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        baseTile.Initialize(baseTile.tileSpeed);
+        //baseTile.Initialize(baseTile.tileSpeed);
     }
 }

@@ -1,64 +1,50 @@
 using UnityEngine;
-using UnityEngine.InputSystem;  // Required for new Input System
 
 public class BaseTile : MonoBehaviour
 {
     public float tileSpeed;
-    protected float despawnY = -6f; // off-screen Y
+    protected float despawnY = -6f;
 
-    public void Initialize(float fallSpeed)
+    protected int laneIndex;      // Which lane this tile belongs to
+    protected bool canBeHit;      // True when inside hit area
+
+    public void Initialize(float fallSpeed, int lane)
     {
         tileSpeed = fallSpeed;
+        laneIndex = lane;
+        canBeHit = false;
     }
-
-    void Update()
+    private void Update()
     {
-        // Move tile down
-        transform.Translate(Vector3.down * tileSpeed * Time.deltaTime);
+        Move(tileSpeed);
+    }
+    public void Move(float fallSpeed)
+    {
+        transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
 
-        // Despawn if offscreen
         if (transform.position.y < despawnY)
         {
             DespawnTile();
         }
-
-        // Check input using new Input System
-        DetectInput();
     }
 
-    void DetectInput()
+    public void SetHitState(bool state)
     {
-        // ----- MOUSE CLICK -----
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            Vector2 mouse2D = new Vector2(mousePos.x, mousePos.y);
+        canBeHit = state;
+    }
 
-            Collider2D hit = Physics2D.OverlapPoint(mouse2D);
-            if (hit != null && hit.transform == this.transform)
-            {
-                DespawnTile();
-            }
+    public bool TryHit(int pressedLane)
+    {
+        if (!canBeHit)
+            return false;
+
+        if (pressedLane == laneIndex)
+        {
+            DespawnTile();
+            return true;
         }
 
-        // ----- TOUCH INPUT -----
-        if (Touchscreen.current != null)
-        {
-            foreach (var touch in Touchscreen.current.touches)
-            {
-                if (touch.press.isPressed && touch.phase.ReadValue() == UnityEngine.InputSystem.TouchPhase.Began)
-                {
-                    Vector3 touchPos = Camera.main.ScreenToWorldPoint(touch.position.ReadValue());
-                    Vector2 touch2D = new Vector2(touchPos.x, touchPos.y);
-
-                    Collider2D hit = Physics2D.OverlapPoint(touch2D);
-                    if (hit != null && hit.transform == this.transform)
-                    {
-                        DespawnTile();
-                    }
-                }
-            }
-        }
+        return false;
     }
 
     public void DespawnTile()
