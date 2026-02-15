@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class BaseTile : MonoBehaviour
 {
-    public float tileSpeed;
-    protected float despawnY = -6f;
+    protected float tileSpeed;
+    public float despawnY = -6f;
 
     protected int laneIndex;      // Which lane this tile belongs to
     protected bool canBeHit;      // True when inside hit area

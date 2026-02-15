@@ -9,6 +9,7 @@ public class TileSpawner : MonoBehaviour
     [Header("Tiles")]
     public Transform normalTile;
     public Transform sliderTile;
+    public float tileSpeed;
 
     [Header("Spawn Chances")]
     [Range(0f, 1f)]
@@ -36,7 +37,7 @@ public class TileSpawner : MonoBehaviour
         BaseTile tile = obj.GetComponent<BaseTile>();
 
         // Initialize with speed and lane index
-        tile.Initialize(5f, laneIndex); // <-- use your fallSpeed variable if you have one
+        tile.Initialize(tileSpeed, laneIndex); // <-- use your fallSpeed variable if you have one
 
         Debug.Log("Tile Spawned!!");
     }
