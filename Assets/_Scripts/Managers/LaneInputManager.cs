@@ -6,6 +6,7 @@ public class LaneInputManager : MonoBehaviour
 
     // References
     public TilePressEffect tilePressEffect;
+    public CameraShake cameraShake;
     public Key[] laneKeys = new Key[5]
     {
         Key.A,
@@ -34,7 +35,12 @@ public class LaneInputManager : MonoBehaviour
         {
             if (tile.TryHit(laneIndex))
             {
+                // Plays the tile press partical Effect
                 tilePressEffect.PlayTilePressPartical(laneIndex);
+
+                // Shakes the Camera
+                cameraShake.Shake();
+
                 return; // Correct tile hit
             }
         }
