@@ -3,6 +3,9 @@ using UnityEngine.InputSystem;
 
 public class LaneInputManager : MonoBehaviour
 {
+
+    // References
+    public TilePressEffect tilePressEffect;
     public Key[] laneKeys = new Key[5]
     {
         Key.A,
@@ -30,7 +33,10 @@ public class LaneInputManager : MonoBehaviour
         foreach (BaseTile tile in tiles)
         {
             if (tile.TryHit(laneIndex))
+            {
+                tilePressEffect.PlayTilePressPartical(laneIndex);
                 return; // Correct tile hit
+            }
         }
 
         Debug.Log("wrong key pressed");
