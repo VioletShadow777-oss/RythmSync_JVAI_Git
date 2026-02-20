@@ -649,7 +649,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraShake
   duration: 0.05
-  amplitude: 0.2
+  amplitude: 0.05
   frequency: 25
 --- !u!1 &345190499
 GameObject:
