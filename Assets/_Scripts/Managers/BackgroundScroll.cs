@@ -4,8 +4,8 @@ public class BackgroundLooper : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float speed = 15f;        
-    public float initYPos;  
-    public float endYPos;
+    public float initYPos = 74;  
+    public float endYPos = 43;
 
     private void Start()
     {
