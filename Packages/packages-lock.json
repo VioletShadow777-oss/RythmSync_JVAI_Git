@@ -8,6 +8,13 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       }
     },
+    "com.cqf.urpvolumetricfog": {
+      "version": "https://github.com/CristianQiu/Unity-URP-Volumetric-Light.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ea889ab041bf1d4110ecf431a8488220a86fac9d"
+    },
     "com.unity.2d.animation": {
       "version": "13.0.4",
       "depth": 1,
@@ -117,7 +124,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ai.navigation": {
-      "version": "2.0.9",
+      "version": "2.0.11",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -136,7 +143,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
-      "version": "2.11.2",
+      "version": "2.11.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -256,6 +263,28 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       }
     },
+    "com.unity.render-pipelines.high-definition": {
+      "version": "17.3.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.video": "1.0.0",
+        "com.unity.modules.animation": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0",
+        "com.unity.render-pipelines.core": "17.3.0",
+        "com.unity.shadergraph": "17.3.0",
+        "com.unity.visualeffectgraph": "17.3.0",
+        "com.unity.render-pipelines.high-definition-config": "17.3.0"
+      }
+    },
+    "com.unity.render-pipelines.high-definition-config": {
+      "version": "17.3.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "17.3.0"
+      }
+    },
     "com.unity.render-pipelines.universal": {
       "version": "17.3.0",
       "depth": 0,
@@ -311,7 +340,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.8.10",
+      "version": "1.8.11",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -329,6 +358,15 @@
       "dependencies": {
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
+      }
+    },
+    "com.unity.visualeffectgraph": {
+      "version": "17.3.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.shadergraph": "17.3.0",
+        "com.unity.render-pipelines.core": "17.3.0"
       }
     },
     "com.unity.visualscripting": {
