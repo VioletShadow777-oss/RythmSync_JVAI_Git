@@ -5,7 +5,7 @@ public class CameraShake : MonoBehaviour
 {
     [Header("Shake Settings")]
     public float duration = 0.2f;     // How long shake lasts
-    public float amplitude = 0.2f;    // How strong the shake is
+    public float amplitude = 0.5f;    // How strong the shake is
     public float frequency = 25f;     // How fast it vibrates
 
     private Vector3 originalPosition;
