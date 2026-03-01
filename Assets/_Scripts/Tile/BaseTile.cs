@@ -5,6 +5,9 @@ public class BaseTile : MonoBehaviour
     protected float tileSpeed;
     public float despawnY = -6f;
 
+
+    public static float HitLineY = 0f; // Y position of the hit line, set by HitLine script
+
     protected int laneIndex;      // Which lane this tile belongs to
     protected bool canBeHit;      // True when inside hit area
 
@@ -33,6 +36,29 @@ public class BaseTile : MonoBehaviour
         canBeHit = state;
     }
 
+    private ScoreRatingType GetRating()
+    {
+        float distance = Mathf.Abs(transform.position.y - HitLineY);
+        if (distance < 0.35f) 
+        { 
+            return ScoreRatingType.Perfect;
+        }
+        if (distance < 0.75f)
+        { 
+            return ScoreRatingType.Great;
+        }
+        if (distance < 1.25f)
+        {
+            return ScoreRatingType.Good;
+        }
+        if (distance < 0.1f)
+        {
+            return ScoreRatingType.Miss;
+        }
+        return ScoreRatingType.Miss;
+
+    }
+
     public bool TryHit(int pressedLane)
     {
         if (!canBeHit)
@@ -40,6 +66,8 @@ public class BaseTile : MonoBehaviour
 
         if (pressedLane == laneIndex)
         {
+            ScoreRatingType rating = GetRating();
+            ScoreManager.Instance.AddScore(rating);
             DespawnTile();
             return true;
         }

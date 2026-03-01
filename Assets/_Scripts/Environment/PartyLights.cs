@@ -8,8 +8,8 @@ public class StageLight : MonoBehaviour
     public Transform headPivot;
 
     [Header("Speed")]
-    public float yokeDuration = 3f;
-    public float headDuration = 2f;
+    public float yokeDuration = 5f;
+    public float headDuration = 3f;
 
     Tween _yoke, _head;
 
