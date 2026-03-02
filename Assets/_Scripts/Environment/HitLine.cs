@@ -11,22 +11,22 @@ public class HitLine : MonoBehaviour
     {
         BaseTile tile = other.GetComponent<BaseTile>();
         if (tile != null)
-        {
-            tile.SetHitState(true); // Tile is now hittable
-
-        }
+            tile.SetHitState(true);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         BaseTile tile = other.GetComponent<BaseTile>();
-        if (tile != null)
-        {
-            tile.SetHitState(false); // Too late
-            ScoreManager.Instance.AddScore(ScoreRatingType.Miss); // No score for a miss, but you could still trigger other effects here if desired
-            Debug.Log("Missed lane");
-            
+        if (tile == null) return;
 
+        tile.SetHitState(false);
+
+        // Only register a Miss if the player never hit this tile
+        // WasHit guards against the phantom Miss caused by despawning inside the trigger
+        if (!tile.WasHit)
+        {
+            ScoreManager.Instance.AddScore(ScoreRatingType.Miss);
+            Debug.Log("Missed lane");
         }
     }
 }

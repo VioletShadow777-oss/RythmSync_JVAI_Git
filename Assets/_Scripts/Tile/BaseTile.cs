@@ -9,13 +9,15 @@ public class BaseTile : MonoBehaviour
 
     protected int laneIndex;
     protected bool canBeHit;
+    public bool WasHit { get; private set; } // Prevents phantom Miss on despawn
 
-    /// <summary>Initializes tile speed and lane, and registers into TileRegistry.</summary>
+    /// <summary>Initializes tile speed, lane, and resets hit state.</summary>
     public void Initialize(float fallSpeed, int lane)
     {
         tileSpeed = fallSpeed;
         laneIndex = lane;
         canBeHit = false;
+        WasHit = false; // Reset every time tile is recycled from pool
 
         TileRegistry.Register(laneIndex, this);
     }
@@ -42,9 +44,9 @@ public class BaseTile : MonoBehaviour
     {
         float distance = Mathf.Abs(transform.position.y - HitLineY);
 
-        if (distance < 0.35f) return ScoreRatingType.Perfect;
-        if (distance < 0.75f) return ScoreRatingType.Great;
-        if (distance < 1.25f) return ScoreRatingType.Good;
+        if (distance < 0.5f) return ScoreRatingType.Perfect;
+        if (distance < 0.85f) return ScoreRatingType.Great;
+        if (distance < 1.1f) return ScoreRatingType.Good;
 
         return ScoreRatingType.Miss;
     }
@@ -54,6 +56,7 @@ public class BaseTile : MonoBehaviour
         if (!canBeHit || pressedLane != laneIndex)
             return false;
 
+        WasHit = true; // Mark before despawn so OnTriggerExit2D ignores this tile
         ScoreRatingType rating = GetRating();
         ScoreManager.Instance.AddScore(rating);
         DespawnTile();
