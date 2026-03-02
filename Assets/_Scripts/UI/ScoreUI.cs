@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 using System.Collections;
 
 public class ScoreUI : MonoBehaviour
@@ -51,10 +50,10 @@ public class ScoreUI : MonoBehaviour
     }
 
     //Shows Miss Text
-    //public IEnumerator ShowMissCoroutine()
-    //{
-    //    missUIText.SetActive(true);
-    //    yield return new WaitForSeconds(0.5f);
-    //    missUIText.SetActive(false);
-    //}
+    public IEnumerator ShowMissCoroutine()
+    {
+        missUIText.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        missUIText.SetActive(false);
+    }
 }

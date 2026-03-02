@@ -22,7 +22,7 @@ public static class ScoreRating
                     ScoreUI.Instance.StartCoroutine(ScoreUI.Instance.ShowGoodCoroutine());
                 return 50;
             case ScoreRatingType.Miss:
-                    //ScoreUI.Instance.StartCoroutine(ScoreUI.Instance.ShowMissCoroutine());
+                    ScoreUI.Instance.StartCoroutine(ScoreUI.Instance.ShowMissCoroutine());
                 return 0;
             default:
                 return 0;
