@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        SetGameplaySystems(false);
         SetState(GameState.Idle);
     }
 
@@ -77,6 +78,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         ScoreManager.Instance.ResetScore();
+        beatDetector.ResetAudio();
         StartCoroutine(CountdownCoroutine());
     }
 

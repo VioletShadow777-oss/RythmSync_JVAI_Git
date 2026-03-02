@@ -19,6 +19,7 @@ public class BeatDetector : MonoBehaviour
     private float previousEnergy = 0f;
     private float lastBeatTime = 0f;
     private int frameCounter = 0;
+    private bool songStarted = false;
 
     private List<float> beatQueue = new List<float>();
 
@@ -37,13 +38,43 @@ public class BeatDetector : MonoBehaviour
         }
     }
 
-    void Start()
+    void OnEnable()
     {
-        audioSource.Play();
+        songStarted = false;
+
+        if (audioSource.clip != null && audioSource.time > 0f)
+            audioSource.UnPause();
+        else
+        {
+            beatQueue.Clear();
+            audioSource.Play();
+        }
+    }
+
+    void OnDisable()
+    {
+        audioSource.Pause();
+    }
+
+    /// <summary>Stops the audio and clears the beat queue so the next enable starts fresh from the beginning.</summary>
+    public void ResetAudio()
+    {
+        audioSource.Stop();
+        beatQueue.Clear();
     }
 
     void Update()
     {
+        if (!songStarted && audioSource.isPlaying)
+            songStarted = true;
+
+        if (songStarted && !audioSource.isPlaying && GameManager.Instance.CurrentState == GameState.Playing)
+        {
+            Debug.Log("Song ended — triggering results.");
+            ScoreManager.Instance.TriggerResults();
+            return;
+        }
+
         frameCounter++;
         if (frameCounter % DetectionFrameInterval == 0)
             DetectBeat();
