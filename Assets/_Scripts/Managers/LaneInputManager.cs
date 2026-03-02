@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class LaneInputManager : MonoBehaviour
 {
-
-    // References
     public TilePressEffect tilePressEffect;
     public CameraShake cameraShake;
+
     public Key[] laneKeys = new Key[5]
     {
         Key.A,
@@ -16,35 +16,36 @@ public class LaneInputManager : MonoBehaviour
         Key.G
     };
 
-    void Update()
+    private void Update()
     {
         for (int i = 0; i < laneKeys.Length; i++)
         {
             if (Keyboard.current[laneKeys[i]].wasPressedThisFrame)
-            {
                 CheckLaneHit(i);
-            }
         }
     }
 
-    void CheckLaneHit(int laneIndex)
+    private void CheckLaneHit(int laneIndex)
     {
-        BaseTile[] tiles = FindObjectsByType<BaseTile>(FindObjectsSortMode.None);
+        List<BaseTile> tiles = TileRegistry.GetTilesInLane(laneIndex);
 
-        foreach (BaseTile tile in tiles)
+        if (tiles == null || tiles.Count == 0)
         {
-            if (tile.TryHit(laneIndex))
+            Debug.Log("No tiles in lane " + laneIndex);
+            return;
+        }
+
+        // Iterate a copy to avoid mutation issues during despawn
+        for (int i = tiles.Count - 1; i >= 0; i--)
+        {
+            if (tiles[i].TryHit(laneIndex))
             {
-                // Plays the tile press partical Effect
                 tilePressEffect.PlayTilePressPartical(laneIndex);
-
-                // Shakes the Camera
                 cameraShake.Shake();
-
-                return; // Correct tile hit
+                return;
             }
         }
 
-        Debug.Log("wrong key pressed");
+        Debug.Log("Wrong key pressed on lane " + laneIndex);
     }
 }
