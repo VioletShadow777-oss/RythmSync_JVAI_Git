@@ -11,15 +11,31 @@ public class BeatDetector : MonoBehaviour
     [Tooltip("How early before the beat the tile should spawn")]
     public float spawnEarlyTime = 0.8f;
 
-    private float[] spectrum = new float[1024];
+    private const int SpectrumSize = 512;
+    private const int FrequencyBands = 20;
+    private const int DetectionFrameInterval = 2;
+
+    private float[] spectrum = new float[SpectrumSize];
     private float previousEnergy = 0f;
     private float lastBeatTime = 0f;
+    private int frameCounter = 0;
 
-    // Store upcoming beats
     private List<float> beatQueue = new List<float>();
 
     public AudioSource audioSource;
     public TileSpawner tileSpawner;
+
+    /// <summary>Returns song playback progress as a normalized value between 0 and 1.</summary>
+    public float SongProgress
+    {
+        get
+        {
+            if (audioSource.clip == null || audioSource.clip.length <= 0f)
+                return 0f;
+
+            return audioSource.time / audioSource.clip.length;
+        }
+    }
 
     void Start()
     {
@@ -28,53 +44,43 @@ public class BeatDetector : MonoBehaviour
 
     void Update()
     {
-        DetectBeat();
+        frameCounter++;
+        if (frameCounter % DetectionFrameInterval == 0)
+            DetectBeat();
+
         HandleSpawning();
     }
 
-    // Detect beat and store beat time
     private void DetectBeat()
     {
         if (!audioSource.isPlaying)
             return;
 
-        audioSource.GetSpectrumData(spectrum, 0, FFTWindow.Blackman);
+        audioSource.GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
 
         float currentEnergy = 0f;
-
-        for (int i = 0; i < 20; i++)
-        {
+        for (int i = 0; i < FrequencyBands; i++)
             currentEnergy += spectrum[i];
-        }
 
         float songTime = audioSource.time;
 
-        if (currentEnergy > previousEnergy * sensitivity)
+        if (currentEnergy > previousEnergy * sensitivity && songTime - lastBeatTime > minBeatInterval)
         {
-            if (songTime - lastBeatTime > minBeatInterval)
-            {
-                // Store beat time instead of spawning instantly
-                beatQueue.Add(songTime);
-
-                Debug.Log("Beat detected at: " + songTime);
-                lastBeatTime = songTime;
-            }
+            beatQueue.Add(songTime);
+            lastBeatTime = songTime;
+            Debug.Log($"Beat detected at: {songTime:F2}s");
         }
 
         previousEnergy = currentEnergy;
     }
 
-    // Spawn tiles slightly before beat
     private void HandleSpawning()
     {
         float currentTime = audioSource.time;
 
         for (int i = beatQueue.Count - 1; i >= 0; i--)
         {
-            float beatTime = beatQueue[i];
-
-            // Spawn early
-            if (currentTime >= beatTime - spawnEarlyTime)
+            if (currentTime >= beatQueue[i] - spawnEarlyTime)
             {
                 tileSpawner.SpawnTiles();
                 beatQueue.RemoveAt(i);

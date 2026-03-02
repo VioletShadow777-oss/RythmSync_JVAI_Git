@@ -37,9 +37,8 @@ public class TileSpawner : MonoBehaviour
         BaseTile tile = obj.GetComponent<BaseTile>();
 
         // Initialize with speed and lane index
-        tile.Initialize(tileSpeed, laneIndex); // <-- use your fallSpeed variable if you have one
-
-        Debug.Log("Tile Spawned!!");
+        tile.Initialize(tileSpeed, laneIndex);
+        Debug.Log($"Tile spawned in lane {laneIndex}");
     }
 
     // Generates random lane index but never same as last lane

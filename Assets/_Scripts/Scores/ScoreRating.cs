@@ -10,19 +10,21 @@ public static class ScoreRating
 {
     public static int GetScoreRating(ScoreRatingType rating)
     {
+        ScoreUI ui = ScoreUI.Instance;
+
         switch (rating)
         {
             case ScoreRatingType.Perfect:
-                    ScoreUI.Instance.StartCoroutine(ScoreUI.Instance.ShowPerfectCoroutine());
+                ui.StartCoroutine(ui.ShowRatingCoroutine(ui.perfectUIText));
                 return 100;
             case ScoreRatingType.Great:
-                    ScoreUI.Instance.StartCoroutine(ScoreUI.Instance.ShowGreatCoroutine());
+                ui.StartCoroutine(ui.ShowRatingCoroutine(ui.greatUIText));
                 return 70;
             case ScoreRatingType.Good:
-                    ScoreUI.Instance.StartCoroutine(ScoreUI.Instance.ShowGoodCoroutine());
+                ui.StartCoroutine(ui.ShowRatingCoroutine(ui.goodUIText));
                 return 50;
             case ScoreRatingType.Miss:
-                    ScoreUI.Instance.StartCoroutine(ScoreUI.Instance.ShowMissCoroutine());
+                ui.StartCoroutine(ui.ShowRatingCoroutine(ui.missUIText));
                 return 0;
             default:
                 return 0;
