@@ -5,12 +5,10 @@ public class ScoreUI : MonoBehaviour
 {
     public static ScoreUI Instance;
 
-
     public GameObject perfectUIText;
     public GameObject greatUIText;
     public GameObject goodUIText;
     public GameObject missUIText;
-
 
     private void Awake()
     {
@@ -25,35 +23,11 @@ public class ScoreUI : MonoBehaviour
         }
     }
 
-    //Shows Perfect Text
-    public IEnumerator ShowPerfectCoroutine()
+    /// <summary>Briefly flashes the given rating GameObject for 0.5 seconds.</summary>
+    public IEnumerator ShowRatingCoroutine(GameObject ratingObject)
     {
-        perfectUIText.SetActive(true);
+        ratingObject.SetActive(true);
         yield return new WaitForSeconds(0.5f);
-        perfectUIText.SetActive(false);
-    }
-
-    //Shows Great Text
-    public IEnumerator ShowGreatCoroutine()
-    {
-        greatUIText.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-        greatUIText.SetActive(false);
-    }
-
-    //Shows Good Text
-    public IEnumerator ShowGoodCoroutine()
-    {
-        goodUIText.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-        goodUIText.SetActive(false);
-    }
-
-    //Shows Miss Text
-    public IEnumerator ShowMissCoroutine()
-    {
-        missUIText.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-        missUIText.SetActive(false);
+        ratingObject.SetActive(false);
     }
 }
