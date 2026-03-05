@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static GameManager Instance;
     public GameState CurrentState { get; private set; }
     public static event Action<GameState> OnGameStateChanged;
 
@@ -80,6 +81,10 @@ public class GameManager : MonoBehaviour
         ScoreManager.Instance.ResetScore();
         beatDetector.ResetAudio();
         StartCoroutine(CountdownCoroutine());
+
+        
+
+
     }
 
     /// <summary>Returns to the main menu from any state.</summary>
@@ -88,6 +93,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SetGameplaySystems(false);
         SetState(GameState.Idle);
+
+        
     }
 
     private void SetGameplaySystems(bool active)
@@ -96,11 +103,23 @@ public class GameManager : MonoBehaviour
         laneInputManager.enabled = active;
     }
 
+    // Countdown coroutine that transitions from Idle to Countdown, then to Playing after a 3-second countdown.
     private IEnumerator CountdownCoroutine()
     {
         SetState(GameState.Countdown);
         yield return new WaitForSeconds(3f);
         SetGameplaySystems(true);
         SetState(GameState.Playing);
+    }
+
+    // Call this function to quit the application
+    public void DoQuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
+        
     }
 }
