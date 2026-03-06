@@ -10,9 +10,8 @@ public class UIManager : MonoBehaviour
     public GameObject pausePanel;
     public GameObject resultsPanel;
 
-    [Header("Settings Panel")]
-    public GameObject settingsPanel;
-    private bool isSettingsActive;
+    [Header("Pause Panel")]
+    private bool isPauseActive;
     private void Awake()
     {
         if (Instance == null)
@@ -22,8 +21,8 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
-        isSettingsActive = false; // Initialize settings panel state
-        settingsPanel.SetActive(false); // Ensure it's hidden at start
+        isPauseActive = false; // Initialize settings panel state
+        pausePanel.SetActive(false); // Ensure it's hidden at start
 
     }
 
@@ -68,18 +67,18 @@ public class UIManager : MonoBehaviour
 
     public void ToggleSettingsPanel()
     {
-        if(isSettingsActive == false)
+        if(isPauseActive == false)
         {
-            settingsPanel.SetActive(true);
-            isSettingsActive = true;
+            pausePanel.SetActive(true);
+            isPauseActive = true;
 
             //Pause the game when settings panel is active
             GameManager.Instance.PauseGame();
         }
         else
         {
-            settingsPanel.SetActive(false);
-            isSettingsActive = false;
+            pausePanel.SetActive(false);
+            isPauseActive = false;
 
             //Resume the game when settings panel is closed
             GameManager.Instance.ResumeGame();
