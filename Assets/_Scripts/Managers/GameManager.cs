@@ -53,15 +53,11 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0f;
         SetGameplaySystems(false);
-        SetState(GameState.Paused);
     }
 
     /// <summary>Resumes the game from a paused state.</summary>
     public void ResumeGame()
     {
-        if (CurrentState != GameState.Paused)
-            return;
-
         Time.timeScale = 1f;
         SetGameplaySystems(true);
         SetState(GameState.Playing);
