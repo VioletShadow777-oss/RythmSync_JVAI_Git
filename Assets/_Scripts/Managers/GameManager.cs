@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Application.runInBackground = true;
+        
         if (Instance == null)
         {
             Instance = this;
@@ -73,14 +75,14 @@ public class GameManager : MonoBehaviour
     /// <summary>Restarts the game from any state, resetting score and running the countdown again.</summary>
     public void RestartGame()
     {
-        Time.timeScale = 1f;
         ScoreManager.Instance.ResetScore();
-        beatDetector.ResetAudio();
-        StartCoroutine(CountdownCoroutine());
 
-        
+        if (beatDetector != null)
+        {
+            beatDetector.ResetAudio();
+        }
 
-
+        StartGame();
     }
 
     /// <summary>Returns to the main menu from any state.</summary>
