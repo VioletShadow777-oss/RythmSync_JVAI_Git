@@ -57,6 +57,11 @@ public class ScoreManager : MonoBehaviour
     /// <summary>Signals the end of the song and hands control over to GameManager to transition to Results state.</summary>
     public void TriggerResults()
     {
+        if (WebSocketClientManager.Instance != null)
+        {
+            WebSocketClientManager.Instance.SendFinalResult();
+        }
+
         GameManager.Instance.EndGame();
     }
 

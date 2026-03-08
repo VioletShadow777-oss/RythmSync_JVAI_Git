@@ -26,6 +26,25 @@ public class BeatDetector : MonoBehaviour
     public AudioSource audioSource;
     public TileSpawner tileSpawner;
 
+    public void SetSong(AudioClip clip)
+    {
+        if (clip == null)
+        {
+            Debug.LogWarning("[BeatDetector] SetSong received null clip.");
+            return;
+        }
+
+        audioSource.clip = clip;
+        songStarted = false;
+        beatQueue.Clear();
+        lastBeatTime = -minBeatInterval;
+        previousEnergy = 0f;
+        frameCounter = 0;
+
+        audioSource.Stop();
+        audioSource.time = 0f;
+    }
+
     /// <summary>Returns song playback progress as a normalized value between 0 and 1.</summary>
     public float SongProgress
     {
