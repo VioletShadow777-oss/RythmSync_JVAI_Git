@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Application.runInBackground = true;
+        
         if (Instance == null)
         {
             Instance = this;
@@ -53,15 +55,11 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0f;
         SetGameplaySystems(false);
-        SetState(GameState.Paused);
     }
 
     /// <summary>Resumes the game from a paused state.</summary>
     public void ResumeGame()
     {
-        if (CurrentState != GameState.Paused)
-            return;
-
         Time.timeScale = 1f;
         SetGameplaySystems(true);
         SetState(GameState.Playing);
@@ -77,14 +75,14 @@ public class GameManager : MonoBehaviour
     /// <summary>Restarts the game from any state, resetting score and running the countdown again.</summary>
     public void RestartGame()
     {
-        Time.timeScale = 1f;
         ScoreManager.Instance.ResetScore();
-        beatDetector.ResetAudio();
-        StartCoroutine(CountdownCoroutine());
 
-        
+        if (beatDetector != null)
+        {
+            beatDetector.ResetAudio();
+        }
 
-
+        StartGame();
     }
 
     /// <summary>Returns to the main menu from any state.</summary>

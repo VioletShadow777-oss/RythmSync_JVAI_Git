@@ -52,16 +52,26 @@ public class BaseTile : MonoBehaviour
     }
 
     public bool TryHit(int pressedLane)
-    {
-        if (!canBeHit || pressedLane != laneIndex)
-            return false;
+{
+    if (GameManager.Instance == null || GameManager.Instance.CurrentState != GameState.Playing)
+        return false;
 
-        WasHit = true; // Mark before despawn so OnTriggerExit2D ignores this tile
-        ScoreRatingType rating = GetRating();
-        ScoreManager.Instance.AddScore(rating);
-        DespawnTile();
-        return true;
+    if (!canBeHit || pressedLane != laneIndex)
+        return false;
+
+    WasHit = true; // Mark before despawn so OnTriggerExit2D ignores this tile
+
+    ScoreRatingType rating = GetRating();
+    ScoreManager.Instance.AddScore(rating);
+
+    if (WebSocketClientManager.Instance != null)
+    {
+        WebSocketClientManager.Instance.SendScore(rating.ToString());
     }
+
+    DespawnTile();
+    return true;
+}
 
     /// <summary>Unregisters from TileRegistry and returns to the pool.</summary>
     public void DespawnTile()
