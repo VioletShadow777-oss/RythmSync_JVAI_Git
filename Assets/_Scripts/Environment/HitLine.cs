@@ -15,18 +15,27 @@ public class HitLine : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D other)
+{
+    if (GameManager.Instance == null || GameManager.Instance.CurrentState != GameState.Playing)
+        return;
+
+    BaseTile tile = other.GetComponent<BaseTile>();
+    if (tile == null) return;
+
+    tile.SetHitState(false);
+
+    // Only register a Miss if the player never hit this tile
+    // WasHit guards against the phantom Miss caused by despawning inside the trigger
+    if (!tile.WasHit)
     {
-        BaseTile tile = other.GetComponent<BaseTile>();
-        if (tile == null) return;
+        ScoreManager.Instance.AddScore(ScoreRatingType.Miss);
 
-        tile.SetHitState(false);
-
-        // Only register a Miss if the player never hit this tile
-        // WasHit guards against the phantom Miss caused by despawning inside the trigger
-        if (!tile.WasHit)
+        if (WebSocketClientManager.Instance != null)
         {
-            ScoreManager.Instance.AddScore(ScoreRatingType.Miss);
-            Debug.Log("Missed lane");
+            WebSocketClientManager.Instance.SendScore(ScoreRatingType.Miss.ToString());
         }
+
+        Debug.Log("Missed lane");
     }
+}
 }

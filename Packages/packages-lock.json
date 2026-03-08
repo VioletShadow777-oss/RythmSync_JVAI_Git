@@ -15,6 +15,13 @@
       "dependencies": {},
       "hash": "ea889ab041bf1d4110ecf431a8488220a86fac9d"
     },
+    "com.endel.nativewebsocket": {
+      "version": "https://github.com/endel/NativeWebSocket.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ea014c9ae534d56111962d96f89f8a046e302dc9"
+    },
     "com.unity.2d.animation": {
       "version": "13.0.4",
       "depth": 1,
