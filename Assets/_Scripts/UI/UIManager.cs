@@ -9,9 +9,11 @@ public class UIManager : MonoBehaviour
     public GameObject countdownPanel;
     public GameObject pausePanel;
     public GameObject resultsPanel;
+    public GameObject MusicPanel;
 
     [Header("Pause Panel")]
     private bool isPauseActive;
+    private bool isMusicPanelActive;
     private void Awake()
     {
         if (Instance == null)
@@ -21,8 +23,10 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
+        isMusicPanelActive = false; // Initialize music panel state
         isPauseActive = false; // Initialize settings panel state
         pausePanel.SetActive(false); // Ensure it's hidden at start
+       
 
     }
 
@@ -44,6 +48,7 @@ public class UIManager : MonoBehaviour
         countdownPanel.SetActive(false);
         pausePanel.SetActive(false);
         resultsPanel.SetActive(false);
+        isPauseActive = false; // Reset pause state on any state change
 
         switch (state)
         {
@@ -82,6 +87,21 @@ public class UIManager : MonoBehaviour
 
             //Resume the game when settings panel is closed
             GameManager.Instance.ResumeGame();
+        }
+    }
+
+    public void OpenMusicPanel()
+    {
+        if (isMusicPanelActive == false)
+        {
+
+            isMusicPanelActive = true;
+            MusicPanel.SetActive(true);
+        }
+        else
+        {
+            MusicPanel.SetActive(false);
+            isMusicPanelActive = false;
         }
     }
 

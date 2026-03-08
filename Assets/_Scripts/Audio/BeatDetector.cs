@@ -57,17 +57,25 @@ public class BeatDetector : MonoBehaviour
         }
     }
 
+    //void OnEnable()
+    //{
+    //    songStarted = false;
+
+    //    if (audioSource.clip != null && audioSource.time > 0f)
+    //        audioSource.UnPause();
+    //    else
+    //    {
+    //        beatQueue.Clear();
+    //        audioSource.Play();
+    //    }
+    //}
     void OnEnable()
     {
         songStarted = false;
 
         if (audioSource.clip != null && audioSource.time > 0f)
             audioSource.UnPause();
-        else
-        {
-            beatQueue.Clear();
-            audioSource.Play();
-        }
+                
     }
 
     void OnDisable()
@@ -75,11 +83,32 @@ public class BeatDetector : MonoBehaviour
         audioSource.Pause();
     }
 
+    public void StartSong()
+    {
+        beatQueue.Clear();
+        lastBeatTime = -minBeatInterval;
+        previousEnergy = 0f;
+        frameCounter = 0;
+        songStarted = false;
+
+        audioSource.Stop();
+        audioSource.time = 0f;
+        audioSource.Play();
+    }
+
     /// <summary>Stops the audio and clears the beat queue so the next enable starts fresh from the beginning.</summary>
     public void ResetAudio()
     {
+
+        //audioSource.Stop();
+        //beatQueue.Clear();
+
         audioSource.Stop();
+        audioSource.time = 0f;  //Explicitly reset time
         beatQueue.Clear();
+        lastBeatTime = -minBeatInterval;  //Reset beat interval guard
+        previousEnergy = 0f;
+        songStarted = false;
     }
 
     void Update()

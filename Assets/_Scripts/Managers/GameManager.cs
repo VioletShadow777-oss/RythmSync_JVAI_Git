@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
     public static event Action<GameState> OnGameStateChanged;
 
     [SerializeField] private BeatDetector beatDetector;
+    [Header("Countdown UI")]
+    [SerializeField] private TextMeshProUGUI countdownText;
     private LaneInputManager laneInputManager;
 
     private void Awake()
@@ -44,6 +47,7 @@ public class GameManager : MonoBehaviour
     /// <summary>Transitions from Idle to Countdown, then to Playing after a 3-second countdown.</summary>
     public void StartGame()
     {
+        //StartCoroutine(CountdownUI.Instance.PlayCountdown();
         StartCoroutine(CountdownCoroutine());
     }
 
@@ -75,14 +79,18 @@ public class GameManager : MonoBehaviour
     /// <summary>Restarts the game from any state, resetting score and running the countdown again.</summary>
     public void RestartGame()
     {
+        StopAllCoroutines(); // Stop any ongoing countdowns or coroutines
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         ScoreManager.Instance.ResetScore();
 
+        Time.timeScale = 1f; // Ensure time is running in case we were paused
         if (beatDetector != null)
         {
             beatDetector.ResetAudio();
         }
 
         StartGame();
+        StartCoroutine(CountdownCoroutine());
     }
 
     /// <summary>Returns to the main menu from any state.</summary>
@@ -102,11 +110,34 @@ public class GameManager : MonoBehaviour
     }
 
     // Countdown coroutine that transitions from Idle to Countdown, then to Playing after a 3-second countdown.
+    //private IEnumerator CountdownCoroutine()
+    //{
+    //    SetState(GameState.Countdown); // Triggers CountdownUI via event
+    //    yield return new WaitForSeconds(3.5f); // 3s numbers + 0.5s "GO!"
+    //    SetGameplaySystems(true);
+    //    beatDetector.StartSong();
+    //    SetState(GameState.Playing);
+    //}
+
     private IEnumerator CountdownCoroutine()
     {
         SetState(GameState.Countdown);
-        yield return new WaitForSeconds(3f);
+
+        // 3... 2... 1...
+        for (int i = 3; i >= 1; i--)
+        {
+            countdownText.text = i.ToString();
+            yield return new WaitForSeconds(1f);
+        }
+
+        // GO!
+        countdownText.text = "GO!";
+        yield return new WaitForSeconds(0.5f);
+
+        countdownText.text = ""; //Clear after GO!
+
         SetGameplaySystems(true);
+        beatDetector.StartSong();
         SetState(GameState.Playing);
     }
 
@@ -119,5 +150,9 @@ public class GameManager : MonoBehaviour
     Application.Quit();
 #endif
         
+    }
+    public void AddSongMenu()
+    {
+
     }
 }
